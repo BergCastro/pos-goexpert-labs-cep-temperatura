@@ -85,12 +85,12 @@ func getLocation(zipcode string) (*Location, error) {
 }
 
 func getTemperature(city string) (*Temperature, error) {
-	log.Println(city)
+
     apiKey := os.Getenv("WEATHER_API_KEY")
     url := fmt.Sprintf("https://api.weatherapi.com/v1/current.json?key=%s&q=%s", apiKey, city)
     resp, err := http.Get(url)
     if err != nil {
-		log.Println(err)
+	
         return nil, err
     }
     defer resp.Body.Close()
