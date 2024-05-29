@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -48,6 +49,8 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+
+
     temperature, err := getTemperature(location.City)
     if err != nil {
         http.Error(w, "failed to get temperature", http.StatusInternalServerError)
@@ -87,7 +90,8 @@ func getLocation(zipcode string) (*Location, error) {
 func getTemperature(city string) (*Temperature, error) {
 
     apiKey := os.Getenv("WEATHER_API_KEY")
-    url := fmt.Sprintf("https://api.weatherapi.com/v1/current.json?key=%s&q=%s", apiKey, city)
+    encodedCity := url.QueryEscape(city)
+    url := fmt.Sprintf("https://api.weatherapi.com/v1/current.json?key=%s&q=%s", apiKey, encodedCity)
     resp, err := http.Get(url)
     if err != nil {
 	
